@@ -190,6 +190,9 @@ const validateInputs = (inputs: readonly TensorView[], attributes: AttentionAttr
   const totalSequenceLength = pastSequenceLength + kvSequenceLength;
   const broadcastResPosBias = false;
 
+  if (keyPaddingMask) {
+    throw new Error('Key padding mask is not supported');
+  }
   if (relativePositionBias) {
     if (relativePositionBias.dims.length !== 4) {
       throw new Error('Input "relative_position_bias" is expected to have 4 dimensions');
@@ -201,21 +204,10 @@ const validateInputs = (inputs: readonly TensorView[], attributes: AttentionAttr
     }
   }
   if (pastKey) {
-    if (pastKey.dims.length !== 4) {
-      throw new Error('Input "past_key" is expected to have 4 dimensions');
-    }
-    if (pastKey.dims[0] !== batchSize || pastKey.dims[1] !== attributes.numHeads || pastKey.dims[3] !== headSize) {
-      throw new Error('Input "past_key" shape (batch_size, num_heads, past_sequence_length, head_size)');
-    }
+    throw new Error('pastKey is not supported');
   }
   if (pastValue) {
-    if (pastValue.dims.length !== 4) {
-      throw new Error('Input "past_value" is expected to have 4 dimensions');
-    }
-    if (pastValue.dims[0] !== batchSize || pastValue.dims[1] !== attributes.numHeads ||
-        pastValue.dims[3] !== headSize) {
-      throw new Error('Input "past_value" shape (batch_size, num_heads, past_sequence_length, head_size)');
-    }
+    throw new Error('pastValue is not supported');
   }
 
   return {
