@@ -387,6 +387,18 @@ std::vector<GraphEdge> GraphEdge::GetNodeInputEdges(const Node& node) {
   return input_edges;
 }
 
+/** Returns a vector of the input GraphEdges of a node for the provided input index. */
+std::vector<GraphEdge> GraphEdge::GetNodeInputEdges(const Node& node, size_t index) {
+  std::vector<GraphEdge> input_edges;
+  for (auto it = node.InputEdgesBegin(), end = node.InputEdgesEnd(); it != end; ++it) {
+    if (static_cast<size_t>(it->GetDstArgIndex()) == index) {
+      input_edges.push_back(GraphEdge::CreateGraphEdge(node, *it, true));
+    }
+  }
+
+  return input_edges;
+}
+
 /** Returns a vector of the output GraphEdges of a node. */
 std::vector<GraphEdge> GraphEdge::GetNodeOutputEdges(const Node& node) {
   std::vector<GraphEdge> output_edges;

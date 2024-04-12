@@ -89,6 +89,9 @@ struct GraphEdge {
   /** Returns a vector of the input GraphEdges of a node. */
   static std::vector<GraphEdge> GetNodeInputEdges(const Node& node);
 
+  /** Returns a vector of the input GraphEdges of a node for the provided input index. */
+  static std::vector<GraphEdge> GetNodeInputEdges(const Node& node, size_t index);
+
   /** Returns a vector of the output GraphEdges of a node. */
   static std::vector<GraphEdge> GetNodeOutputEdges(const Node& node);
 
