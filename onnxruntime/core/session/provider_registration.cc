@@ -119,13 +119,6 @@ ORT_API_STATUS_IMPL(OrtApis::SessionOptionsAppendExecutionProvider,
 #else
     status = create_not_supported_status();
 #endif
-  } else if (strcmp(provider_name, "Hailo") == 0) {
-#if defined(USE_HAILO)
-    int use_arena = 0;
-    options->provider_factories.push_back(HailoProviderFactoryCreator::Create(use_arena));
-#else
-    status = create_not_supported_status();
-#endif
   } else {
     ORT_UNUSED_PARAMETER(options);
     status = OrtApis::CreateStatus(ORT_INVALID_ARGUMENT,

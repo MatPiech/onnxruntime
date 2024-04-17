@@ -145,16 +145,15 @@ void run_hailo_test(const std::string &model_path, const std::string &session_lo
     InferenceSessionWrapper session_object{session_options, GetEnvironment()};
     ASSERT_STATUS_OK(session_object.Load(model_path));
 
-    auto hailo_provider = DefaultHailoExecutionProvider;
+    auto hailo_provider = DefaultHailoExecutionProvider(true);
     EXPECT_TRUE(hailo_provider != nullptr);
-    // auto cpu_allocator = hailo_provider->GetAllocator(DEFAULT_DEVICE_ID, OrtMemTypeCPU);
-    //// AllocatorPtr cpu_allocator = std::make_shared<CPUAllocator>();
-    // ASSERT_STREQ(cpu_allocator->Info().name, "HailoCpu");
-    // ASSERT_STATUS_OK(session_object.RegisterExecutionProvider(std::move(hailo_provider)));
+    auto cpu_allocator = hailo_provider->CreatePreferredAllocators()[1];
+    ASSERT_STREQ(cpu_allocator->Info().name, "HailoCpu");
+    EXPECT_TRUE(session_object.RegisterExecutionProvider(std::move(hailo_provider)).IsOK());
 
-    // ASSERT_STATUS_OK(session_object.Initialize());
-    // run_session_and_verify_results(session_object, cpu_allocator, input_shape, input_dataset, input_name,
-    //     output_names, expected_results);
+    ASSERT_STATUS_OK(session_object.Initialize());
+    run_session_and_verify_results(session_object, cpu_allocator, input_shape, input_dataset, input_name,
+        output_names, expected_results);
 }
 
 /*
@@ -207,32 +206,32 @@ TEST(HailoCustomOpTest, multipule_sessions)
     InferenceSessionWrapper session_object1{so1, GetEnvironment()};
     auto hailo_provider1 = DefaultHailoExecutionProvider();
     EXPECT_TRUE(hailo_provider1 != nullptr);
-    // auto cpu_allocator1 = hailo_provider1->GetAllocator(DEFAULT_DEVICE_ID, OrtMemTypeCPU);
-    // ASSERT_STATUS_OK(session_object1.RegisterExecutionProvider(std::move(hailo_provider1)));
-    // ASSERT_STATUS_OK(session_object1.Load(shortcut_model_data.m_model_path));
-    // ASSERT_STATUS_OK(session_object1.Initialize());
+    auto cpu_allocator1 = hailo_provider1->CreatePreferredAllocators()[1];
+    ASSERT_STATUS_OK(session_object1.RegisterExecutionProvider(std::move(hailo_provider1)));
+    ASSERT_STATUS_OK(session_object1.Load(shortcut_model_data.m_model_path));
+    ASSERT_STATUS_OK(session_object1.Initialize());
 
-    // run_session_and_verify_results(session_object1, cpu_allocator1, shortcut_model_data.m_input_shape,
-    //     shortcut_model_data.m_input_dataset, shortcut_model_data.m_input_name, shortcut_model_data.m_output_names,
-    //     shortcut_model_data.m_expected_results);
+    run_session_and_verify_results(session_object1, cpu_allocator1, shortcut_model_data.m_input_shape,
+        shortcut_model_data.m_input_dataset, shortcut_model_data.m_input_name, shortcut_model_data.m_output_names,
+        shortcut_model_data.m_expected_results);
 
     auto multple_outputs_model_data = TestDataMultipleOutputs();
     SessionOptions so2;
     InferenceSessionWrapper session_object2{so2, GetEnvironment()};
     auto hailo_provider2 = DefaultHailoExecutionProvider();
     EXPECT_TRUE(hailo_provider2 != nullptr);
-    // auto cpu_allocator2 = hailo_provider2->GetAllocator(DEFAULT_DEVICE_ID, OrtMemTypeCPU);
-    // ASSERT_STATUS_OK(session_object2.RegisterExecutionProvider(std::move(hailo_provider2)));
-    // ASSERT_STATUS_OK(session_object2.Load(multple_outputs_model_data.m_model_path));
-    // ASSERT_STATUS_OK(session_object2.Initialize());
+    auto cpu_allocator2 = hailo_provider2->CreatePreferredAllocators()[1];
+    ASSERT_STATUS_OK(session_object2.RegisterExecutionProvider(std::move(hailo_provider2)));
+    ASSERT_STATUS_OK(session_object2.Load(multple_outputs_model_data.m_model_path));
+    ASSERT_STATUS_OK(session_object2.Initialize());
 
-    // run_session_and_verify_results(session_object2, cpu_allocator2, multple_outputs_model_data.m_input_shape,
-    //     multple_outputs_model_data.m_input_dataset, multple_outputs_model_data.m_input_name, multple_outputs_model_data.m_output_names,
-    //     multple_outputs_model_data.m_expected_results);
+    run_session_and_verify_results(session_object2, cpu_allocator2, multple_outputs_model_data.m_input_shape,
+        multple_outputs_model_data.m_input_dataset, multple_outputs_model_data.m_input_name, multple_outputs_model_data.m_output_names,
+        multple_outputs_model_data.m_expected_results);
 
-    // run_session_and_verify_results(session_object1, cpu_allocator1, shortcut_model_data.m_input_shape,
-    //     shortcut_model_data.m_input_dataset, shortcut_model_data.m_input_name, shortcut_model_data.m_output_names,
-    //     shortcut_model_data.m_expected_results);
+    run_session_and_verify_results(session_object1, cpu_allocator1, shortcut_model_data.m_input_shape,
+        shortcut_model_data.m_input_dataset, shortcut_model_data.m_input_name, shortcut_model_data.m_output_names,
+        shortcut_model_data.m_expected_results);
 }
 
 /*
@@ -244,27 +243,27 @@ TEST(HailoCustomOpTest, one_session_multiple_threads)
     InferenceSessionWrapper session_object{so, GetEnvironment()};
     auto hailo_provider = DefaultHailoExecutionProvider();
     EXPECT_TRUE(hailo_provider != nullptr);
-    // auto cpu_allocator = hailo_provider->GetAllocator(DEFAULT_DEVICE_ID, OrtMemTypeCPU);
-    // ASSERT_STATUS_OK(session_object.RegisterExecutionProvider(std::move(hailo_provider)));
-    // ASSERT_STATUS_OK(session_object.Load(ONNX_SHORTCUT_FILE_PATH));
-    // ASSERT_STATUS_OK(session_object.Initialize());
+    auto cpu_allocator = hailo_provider->CreatePreferredAllocators()[1];
+    ASSERT_STATUS_OK(session_object.RegisterExecutionProvider(std::move(hailo_provider)));
+    ASSERT_STATUS_OK(session_object.Load(ONNX_SHORTCUT_FILE_PATH));
+    ASSERT_STATUS_OK(session_object.Initialize());
 
-    // const size_t threads_count = 20;
-    // std::vector<TestDataShortcut> datasets;
-    // datasets.reserve(threads_count);
-    // for (size_t i = 0; i < threads_count; i++) {
-    //     datasets.emplace_back(TestDataShortcut(i));
-    // }
-    // std::vector<std::thread> threads;
-    // threads.reserve(threads_count);
-    // for (size_t i = 0; i < threads_count; ++i) {
-    //     threads.emplace_back(std::thread(run_session_and_verify_results<float32_t>, std::ref(session_object), std::ref(cpu_allocator),
-    //         std::ref(datasets[i].m_input_shape), std::ref(datasets[i].m_input_dataset), std::ref(datasets[i].m_input_name),
-    //         std::ref(datasets[i].m_output_names), std::ref(datasets[i].m_expected_results)));
-    // }
-    // for (auto& th : threads) {
-    //     th.join();
-    // }
+    const size_t threads_count = 20;
+    std::vector<TestDataShortcut> datasets;
+    datasets.reserve(threads_count);
+    for (size_t i = 0; i < threads_count; i++) {
+        datasets.emplace_back(TestDataShortcut(i));
+    }
+    std::vector<std::thread> threads;
+    threads.reserve(threads_count);
+    for (size_t i = 0; i < threads_count; ++i) {
+        threads.emplace_back(std::thread(run_session_and_verify_results<float32_t>, std::ref(session_object), std::ref(cpu_allocator),
+            std::ref(datasets[i].m_input_shape), std::ref(datasets[i].m_input_dataset), std::ref(datasets[i].m_input_name),
+            std::ref(datasets[i].m_output_names), std::ref(datasets[i].m_expected_results)));
+    }
+    for (auto& th : threads) {
+        th.join();
+    }
 }
 
 TEST(HailoCustomOpTest, one_session_multiple_threads_stress)
@@ -274,27 +273,27 @@ TEST(HailoCustomOpTest, one_session_multiple_threads_stress)
         InferenceSessionWrapper session_object{so, GetEnvironment()};
         auto hailo_provider = DefaultHailoExecutionProvider();
         EXPECT_TRUE(hailo_provider != nullptr);
-        // auto cpu_allocator = hailo_provider->GetAllocator(DEFAULT_DEVICE_ID, OrtMemTypeCPU);
-        // ASSERT_STATUS_OK(session_object.RegisterExecutionProvider(std::move(hailo_provider)));
-        // ASSERT_STATUS_OK(session_object.Load(ONNX_SHORTCUT_FILE_PATH));
-        // ASSERT_STATUS_OK(session_object.Initialize());
+        auto cpu_allocator = hailo_provider->CreatePreferredAllocators()[1];
+        ASSERT_STATUS_OK(session_object.RegisterExecutionProvider(std::move(hailo_provider)));
+        ASSERT_STATUS_OK(session_object.Load(ONNX_SHORTCUT_FILE_PATH));
+        ASSERT_STATUS_OK(session_object.Initialize());
 
-        // const size_t threads_count = 20;
-        // std::vector<TestDataShortcut> datasets;
-        // datasets.reserve(threads_count);
-        // for (size_t i = 0; i < threads_count; i++) {
-        //     datasets.emplace_back(TestDataShortcut(i));
-        // }
-        // std::vector<std::thread> threads;
-        // threads.reserve(threads_count);
-        // for (size_t i = 0; i < threads_count; ++i) {
-        //     threads.emplace_back(std::thread(run_session_and_verify_results<float32_t>, std::ref(session_object), std::ref(cpu_allocator),
-        //         std::ref(datasets[i].m_input_shape), std::ref(datasets[i].m_input_dataset), std::ref(datasets[i].m_input_name),
-        //         std::ref(datasets[i].m_output_names), std::ref(datasets[i].m_expected_results)));
-        // }
-        // for (auto& th : threads) {
-        //     th.join();
-        // }
+        const size_t threads_count = 20;
+        std::vector<TestDataShortcut> datasets;
+        datasets.reserve(threads_count);
+        for (size_t i = 0; i < threads_count; i++) {
+            datasets.emplace_back(TestDataShortcut(i));
+        }
+        std::vector<std::thread> threads;
+        threads.reserve(threads_count);
+        for (size_t i = 0; i < threads_count; ++i) {
+            threads.emplace_back(std::thread(run_session_and_verify_results<float32_t>, std::ref(session_object), std::ref(cpu_allocator),
+                std::ref(datasets[i].m_input_shape), std::ref(datasets[i].m_input_dataset), std::ref(datasets[i].m_input_name),
+                std::ref(datasets[i].m_output_names), std::ref(datasets[i].m_expected_results)));
+        }
+        for (auto& th : threads) {
+            th.join();
+        }
     }
 }
 
