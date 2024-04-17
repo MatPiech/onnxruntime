@@ -805,6 +805,12 @@ inline SessionOptionsImpl<T>& SessionOptionsImpl<T>::AppendExecutionProvider_Dnn
 }
 
 template <typename T>
+inline SessionOptionsImpl<T>& SessionOptionsImpl<T>::AppendExecutionProvider_Hailo(int use_arena) {
+  ThrowOnError(GetApi().SessionOptionsAppendExecutionProvider_Hailo(this->p_, use_arena));
+  return *this;
+}
+
+template <typename T>
 inline SessionOptionsImpl<T>& SessionOptionsImpl<T>::AppendExecutionProvider(
     const std::string& provider_name,
     const std::unordered_map<std::string, std::string>& provider_options) {

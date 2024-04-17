@@ -555,6 +555,12 @@ if(onnxruntime_USE_ARMNN)
   list(APPEND onnxruntime_test_providers_dependencies onnxruntime_providers_armnn)
 endif()
 
+if(onnxruntime_USE_HAILO)
+  list(APPEND onnxruntime_test_framework_src_patterns  ${TEST_SRC_DIR}/providers/hailo/*)
+  list(APPEND onnxruntime_test_framework_libs onnxruntime_providers_hailo)
+  list(APPEND onnxruntime_test_providers_dependencies onnxruntime_providers_hailo onnxruntime_providers_shared)
+endif()
+
 if (onnxruntime_ENABLE_LANGUAGE_INTEROP_OPS)
   set(ONNXRUNTIME_INTEROP_TEST_LIBS PRIVATE onnxruntime_language_interop onnxruntime_pyop)
 endif()
@@ -842,7 +848,7 @@ if (HAS_SHORTEN_64_TO_32 AND NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
 endif()
 
 if (UNIX AND onnxruntime_USE_TENSORRT)
-    # The test_main.cc includes NvInfer.h where it has many deprecated declarations  
+    # The test_main.cc includes NvInfer.h where it has many deprecated declarations
     # simply ignore them for TensorRT EP build
     set_property(TARGET onnxruntime_test_all APPEND_STRING PROPERTY COMPILE_FLAGS "-Wno-deprecated-declarations")
 endif()
@@ -1279,7 +1285,7 @@ if (NOT onnxruntime_ENABLE_TRAINING_TORCH_INTEROP)
     endif()
 
     if (UNIX AND onnxruntime_USE_TENSORRT)
-        # The test_main.cc includes NvInfer.h where it has many deprecated declarations  
+        # The test_main.cc includes NvInfer.h where it has many deprecated declarations
         # simply ignore them for TensorRT EP build
         set_property(TARGET onnxruntime_shared_lib_test APPEND_STRING PROPERTY COMPILE_FLAGS "-Wno-deprecated-declarations")
     endif()
@@ -1562,7 +1568,7 @@ if (NOT CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
     endif()
 
     if (UNIX AND onnxruntime_USE_TENSORRT)
-        # The test_main.cc includes NvInfer.h where it has many deprecated declarations  
+        # The test_main.cc includes NvInfer.h where it has many deprecated declarations
         # simply ignore them for TensorRT EP build
         set_property(TARGET onnxruntime_customopregistration_test APPEND_STRING PROPERTY COMPILE_FLAGS "-Wno-deprecated-declarations")
     endif()

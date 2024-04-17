@@ -248,6 +248,9 @@ def parse_arguments():
     )
     parser.add_argument("--enable_cuda_line_info", action="store_true", help="Enable CUDA line info.")
 
+    # HAILO related
+    parser.add_argument("--use_hailo", action='store_true', help="Enable HAILO.")
+
     # Python bindings
     parser.add_argument("--enable_pybind", action="store_true", help="Enable Python Bindings.")
     parser.add_argument("--build_wheel", action="store_true", help="Build Python Wheel.")
@@ -1361,6 +1364,9 @@ def generate_build_tree(
 
     if args.use_azure:
         add_default_definition(cmake_extra_defines, "onnxruntime_USE_AZURE", "ON")
+
+    if args.use_hailo:
+        add_default_definition(cmake_extra_defines, "onnxruntime_USE_HAILO", "ON")
 
     if args.use_lock_free_queue:
         add_default_definition(cmake_extra_defines, "onnxruntime_USE_LOCK_FREE_QUEUE", "ON")

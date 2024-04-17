@@ -26,15 +26,18 @@ public:
     explicit HailoExecutionProvider(const HailoExecutionProviderInfo& info);
     virtual ~HailoExecutionProvider();
 
+    std::vector<AllocatorPtr> CreatePreferredAllocators() override;
+
     std::vector<std::unique_ptr<ComputeCapability>>
     GetCapability(const onnxruntime::GraphViewer& graph,
-        const std::vector<const KernelRegistry*>& /*kernel_registries*/) const override;
+                  const IKernelLookup& /*kernel_registries*/) const override;
 
-    virtual std::shared_ptr<KernelRegistry> GetKernelRegistry() const override;
+    std::shared_ptr<KernelRegistry> GetKernelRegistry() const override;
 
 private:
     InlinedVector<NodeIndex> GetSupportedNodes(const GraphViewer& graph_viewer) const;
     HailoOpManager m_op_manager;
+    HailoExecutionProviderInfo info_;
 };
 
 }  // namespace onnxruntime

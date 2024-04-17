@@ -40,3 +40,6 @@
 #ifdef USE_CANN
 #include "core/providers/cann/cann_provider_factory.h"
 #endif
+#ifdef USE_HAILO
+#include "core/providers/hailo/hailo_provider_factory.h"
+#endif

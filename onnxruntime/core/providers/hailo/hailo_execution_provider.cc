@@ -53,26 +53,27 @@ class ONNX_OPERATOR_KERNEL_CLASS_NAME(kHailoExecutionProvider, kOnnxDomain, 1, M
 class ONNX_OPERATOR_KERNEL_CLASS_NAME(kHailoExecutionProvider, kHailoDomain, 1, HailoOp);
 
 HailoExecutionProvider::HailoExecutionProvider(const HailoExecutionProviderInfo& info)
-    : IExecutionProvider{onnxruntime::kHailoExecutionProvider, true}
-{
+    : IExecutionProvider{onnxruntime::kHailoExecutionProvider, true}, info_{info}
+{}
+
+HailoExecutionProvider::~HailoExecutionProvider() {}
+
+std::vector<AllocatorPtr> HailoExecutionProvider::CreatePreferredAllocators() {
     AllocatorCreationInfo default_memory_info(
         {[](int) {
             return onnxruntime::CreateCPUAllocator(OrtMemoryInfo(HAILO, OrtAllocatorType::OrtDeviceAllocator));
         }},
-        0, info.create_arena);
+        0, info_.create_arena);
 
     AllocatorCreationInfo cpu_memory_info(
         {[](int) {
             return onnxruntime::CreateCPUAllocator(OrtMemoryInfo(HAILO_CPU, OrtAllocatorType::OrtDeviceAllocator, OrtDevice(), 0,
                                                              OrtMemTypeCPUOutput));
         }},
-        0, info.create_arena);
+        0, info_.create_arena);
 
-    InsertAllocator(CreateAllocator(default_memory_info));
-    InsertAllocator(CreateAllocator(cpu_memory_info));
+    return std::vector<AllocatorPtr>{CreateAllocator(default_memory_info), CreateAllocator(cpu_memory_info)};
 }
-
-HailoExecutionProvider::~HailoExecutionProvider() {}
 
 InlinedVector<NodeIndex> HailoExecutionProvider::GetSupportedNodes(const GraphViewer& graph_viewer) const
 {
@@ -99,10 +100,9 @@ InlinedVector<NodeIndex> HailoExecutionProvider::GetSupportedNodes(const GraphVi
 }
 
 std::vector<std::unique_ptr<ComputeCapability>> HailoExecutionProvider::GetCapability(
-    const GraphViewer& graph_viewer, const std::vector<const KernelRegistry*>& kernel_registries) const
+    const GraphViewer& graph_viewer, const IKernelLookup& /*kernel_lookup*/) const
 {
 
-    ORT_UNUSED_PARAMETER(kernel_registries);
     std::vector<std::unique_ptr<ComputeCapability>> result;
 
     // We do not run Hailo EP on subgraph

@@ -617,6 +617,7 @@ void BaseTester::RunWithConfig(size_t* number_of_pre_packed_weights_counter,
           kQnnExecutionProvider,
           kSnpeExecutionProvider,
           kXnnpackExecutionProvider,
+          kHailoExecutionProvider,
       };
 #endif
 
@@ -659,6 +660,8 @@ void BaseTester::RunWithConfig(size_t* number_of_pre_packed_weights_counter,
           execution_provider = DefaultXnnpackExecutionProvider();
         else if (provider_type == onnxruntime::kDmlExecutionProvider)
           execution_provider = DefaultDmlExecutionProvider();
+        else if (provider_type == onnxruntime::kHailoExecutionProvider)
+          execution_provider = DefaultHailoExecutionProvider();
 
         // skip if execution provider is disabled
         if (execution_provider == nullptr)

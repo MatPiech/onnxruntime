@@ -242,6 +242,7 @@ constexpr const char* kOnnxDomain = "";
 constexpr const char* kMSDomain = "com.microsoft";
 constexpr const char* kPytorchAtenDomain = "org.pytorch.aten";
 constexpr const char* kNGraphDomain = "com.intel.ai";
+constexpr const char* kHailoDomain = "ai.hailo";
 constexpr const char* kCudaExecutionProvider = "CUDAExecutionProvider";
 constexpr const char* kCannExecutionProvider = "CANNExecutionProvider";
 constexpr const char* kDnnlExecutionProvider = "DnnlExecutionProvider";
@@ -252,6 +253,7 @@ constexpr const char* kMIGraphXExecutionProvider = "MIGraphXExecutionProvider";
 constexpr const char* kQnnExecutionProvider = "QNNExecutionProvider";
 constexpr const char* kCpuExecutionProvider = "CPUExecutionProvider";
 constexpr const char* kAzureExecutionProvider = "AzureExecutionProvider";
+constexpr const char* kHailoExecutionProvider = "HailoExecutionProvider";
 
 template <typename T>
 using IAllocatorUniquePtr = std::unique_ptr<T, std::function<void(T*)> >;

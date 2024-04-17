@@ -792,6 +792,12 @@ std::unique_ptr<IExecutionProvider> CreateExecutionProviderInstance(
 
     return onnxruntime::DnnlProviderFactoryCreator::Create(&dnnl_options)->CreateProvider();
 #endif
+  } else if (type == kHailoExecutionProvider) {
+#ifdef USE_HAILO
+    return onnxruntime::HailoProviderFactoryCreator::Create(
+               session_options.enable_cpu_mem_arena)
+        ->CreateProvider();
+#endif
   } else if (type == kOpenVINOExecutionProvider) {
 #ifdef USE_OPENVINO
     ProviderOptions OV_provider_options_map;
@@ -938,6 +944,12 @@ std::unique_ptr<IExecutionProvider> CreateExecutionProviderInstance(
     auto cit = provider_options_map.find(type);
     return onnxruntime::QNNProviderFactoryCreator::Create(
                cit == provider_options_map.end() ? ProviderOptions{} : cit->second, &session_options)
+        ->CreateProvider();
+#endif
+  } else if (type == kHailoExecutionProvider) {
+#ifdef USE_HAILO
+    return onnxruntime::HailoProviderFactoryCreator::Create(
+               session_options.enable_cpu_mem_arena)
         ->CreateProvider();
 #endif
   } else {

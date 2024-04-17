@@ -23,6 +23,7 @@ std::shared_ptr<IExecutionProviderFactory> CreateExecutionProviderFactory_Rocm(c
 std::shared_ptr<IExecutionProviderFactory> CreateExecutionProviderFactory_Tensorrt(const OrtTensorRTProviderOptions* params);
 std::shared_ptr<IExecutionProviderFactory> CreateExecutionProviderFactory_Tensorrt(const OrtTensorRTProviderOptionsV2* params);
 std::shared_ptr<IExecutionProviderFactory> CreateExecutionProviderFactory_Cann(const OrtCANNProviderOptions* provider_options);
+std::shared_ptr<IExecutionProviderFactory> CreateExecutionProviderFactory_Hailo(int use_arena);
 
 // EP for internal testing
 std::shared_ptr<IExecutionProviderFactory> CreateExecutionProviderFactory_InternalTesting(
@@ -56,6 +57,7 @@ std::unique_ptr<IExecutionProvider> QnnExecutionProviderWithOptions(const Provid
 std::unique_ptr<IExecutionProvider> DefaultXnnpackExecutionProvider();
 std::unique_ptr<IExecutionProvider> DefaultCannExecutionProvider();
 std::unique_ptr<IExecutionProvider> DefaultDmlExecutionProvider();
+std::unique_ptr<IExecutionProvider> DefaultHailoExecutionProvider(bool enable_arena = true);
 
 std::unique_ptr<IExecutionProvider> DefaultInternalTestingExecutionProvider(
     const std::unordered_set<std::string>& supported_ops);

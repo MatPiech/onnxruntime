@@ -274,5 +274,15 @@ std::unique_ptr<IExecutionProvider> DefaultDmlExecutionProvider() {
   return nullptr;
 }
 
+std::unique_ptr<IExecutionProvider> DefaultHailoExecutionProvider(bool enable_arena) {
+#ifdef USE_HAILO
+  if (auto factory = HailoProviderFactoryCreator::Create(enable_arena ? 1 : 0))
+    return factory->CreateProvider();
+#else
+  ORT_UNUSED_PARAMETER(enable_arena);
+#endif
+  return nullptr;
+}
+
 }  // namespace test
 }  // namespace onnxruntime

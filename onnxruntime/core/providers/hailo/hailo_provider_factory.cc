@@ -6,6 +6,7 @@
 #include "core/providers/shared_library/provider_api.h"
 #include "core/providers/hailo/hailo_provider_factory.h"
 #include "hailo_execution_provider.h"
+#include "hailo_provider_factory_creator.h"
 
 using namespace onnxruntime;
 
@@ -29,14 +30,20 @@ std::unique_ptr<IExecutionProvider> HailoProviderFactory::CreateProvider() {
     return std::make_unique<HailoExecutionProvider>(info);
 }
 
-struct Hailo_Provider : Provider {
-    std::shared_ptr<IExecutionProviderFactory> CreateExecutionProviderFactory(int use_arena) override {
-        return std::make_shared<HailoProviderFactory>(use_arena != 0);
-    }
+std::shared_ptr<IExecutionProviderFactory> HailoProviderFactoryCreator::Create(int use_arena) {
+  return std::make_shared<onnxruntime::HailoProviderFactory>(use_arena != 0);
+}
 
-    void Shutdown() override {
-        Shutdown_DeleteRegistry();
-    }
+struct Hailo_Provider : Provider {
+  std::shared_ptr<IExecutionProviderFactory> CreateExecutionProviderFactory(int use_arena) override {
+    return std::make_shared<HailoProviderFactory>(use_arena != 0);
+  }
+
+  void Initialize() override {}
+
+  void Shutdown() override {
+    Shutdown_DeleteRegistry();
+  }
 
 } g_provider;
 
@@ -45,6 +52,6 @@ struct Hailo_Provider : Provider {
 extern "C" {
 
 ORT_API(onnxruntime::Provider*, GetProvider) {
-    return &onnxruntime::g_provider;
+  return &onnxruntime::g_provider;
 }
 }

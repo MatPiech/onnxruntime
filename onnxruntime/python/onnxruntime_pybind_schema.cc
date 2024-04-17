@@ -37,6 +37,9 @@ void addGlobalSchemaFunctions(pybind11::module& m) {
 #ifdef USE_DNNL
             onnxruntime::DnnlProviderFactoryCreator::Create(1),
 #endif
+#ifdef USE_HAILO
+            onnxruntime::HailoProviderFactoryCreator::Create(1),
+#endif
 #ifdef USE_OPENVINO
             []() {
               ProviderOptions provider_options_map;

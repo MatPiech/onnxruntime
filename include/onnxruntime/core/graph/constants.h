@@ -24,6 +24,7 @@ constexpr const char* kMSDmlDomain = "com.microsoft.dml";
 constexpr const char* kNGraphDomain = "com.intel.ai";
 constexpr const char* kMIGraphXDomain = "";
 constexpr const char* kVitisAIDomain = "com.xilinx";
+constexpr const char* kHailoDomain = "ai.hailo";
 
 // This is moved from the OrtApis::GetAvailableProviders implementation
 // where it is enforced
@@ -51,6 +52,7 @@ constexpr const char* kXnnpackExecutionProvider = "XnnpackExecutionProvider";
 constexpr const char* kWebNNExecutionProvider = "WebNNExecutionProvider";
 constexpr const char* kCannExecutionProvider = "CANNExecutionProvider";
 constexpr const char* kAzureExecutionProvider = "AzureExecutionProvider";
+constexpr const char* kHailoExecutionProvider = "HailoExecutionProvider";
 
 constexpr const char* kExecutionProviderSharedLibraryPath = "shared_lib_path";
 constexpr const char* kExecutionProviderSharedLibraryEntry = "provider_factory_entry_point";

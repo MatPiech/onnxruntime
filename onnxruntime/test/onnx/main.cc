@@ -41,7 +41,7 @@ void usage() {
       "\t-v: verbose\n"
       "\t-n [test_case_name]: Specifies a single test case to run.\n"
       "\t-e [EXECUTION_PROVIDER]: EXECUTION_PROVIDER could be 'cpu', 'cuda', 'dnnl', 'tensorrt', "
-      "'openvino', 'rocm', 'migraphx', 'acl', 'armnn', 'xnnpack', 'nnapi', 'qnn', 'snpe' or 'coreml'. "
+      "'openvino', 'rocm', 'migraphx', 'acl', 'armnn', 'xnnpack', 'nnapi', 'qnn', 'snpe', 'coreml' or 'hailo'. "
       "Default: 'cpu'.\n"
       "\t-p: Pause after launch, can attach debugger and continue\n"
       "\t-x: Use parallel executor, default (without -x): sequential executor.\n"
@@ -147,6 +147,7 @@ int real_main(int argc, char* argv[], Ort::Env& env) {
   int p_models = GetNumCpuCores();
   bool enable_cuda = false;
   bool enable_dnnl = false;
+  bool enable_hailo = false;
   bool enable_openvino = false;
   bool enable_tensorrt = false;
   bool enable_mem_pattern = true;
@@ -219,6 +220,8 @@ int real_main(int argc, char* argv[], Ort::Env& env) {
             enable_cuda = true;
           } else if (!CompareCString(optarg, ORT_TSTR("dnnl"))) {
             enable_dnnl = true;
+          } else if (!CompareCString(optarg, ORT_TSTR("hailo"))) {
+            enable_hailo = true;
           } else if (!CompareCString(optarg, ORT_TSTR("openvino"))) {
             enable_openvino = true;
           } else if (!CompareCString(optarg, ORT_TSTR("tensorrt"))) {
@@ -426,6 +429,15 @@ int real_main(int argc, char* argv[], Ort::Env& env) {
       return -1;
 #endif
     }
+    if (enable_hailo) {
+#ifdef USE_HAILO
+      Ort::ThrowOnError(OrtSessionOptionsAppendExecutionProvider_Hailo(sf, enable_cpu_mem_arena ? 1 : 0));
+      p_models = 1;
+#else
+      fprintf(stderr, "Hailo is not supported in this build");
+      return -1;
+#endif
+    }
     if (enable_qnn) {
 #ifdef USE_QNN
 #ifdef _MSC_VER
@@ -478,7 +490,7 @@ int real_main(int argc, char* argv[], Ort::Env& env) {
             ORT_THROW("Wrong value for htp_performance_mode. select from: " + str);
           }
         } else {
-          ORT_THROW(R"(Wrong key type entered. Choose from options: ['backend_path', 'qnn_context_cache_enable', 
+          ORT_THROW(R"(Wrong key type entered. Choose from options: ['backend_path', 'qnn_context_cache_enable',
 'qnn_context_cache_path', 'profiling_level', 'rpc_control_latency', 'htp_performance_mode'])");
         }
 

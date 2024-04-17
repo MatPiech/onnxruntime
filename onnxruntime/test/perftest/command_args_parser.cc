@@ -213,6 +213,8 @@ static bool ParseDimensionOverride(std::basic_string<ORTCHAR_T>& dim_identifier,
           test_config.machine_config.provider_type_name = onnxruntime::kXnnpackExecutionProvider;
         } else if (!CompareCString(optarg, ORT_TSTR("vitisai"))) {
           test_config.machine_config.provider_type_name = onnxruntime::kVitisAIExecutionProvider;
+        } else if (!CompareCString(optarg, ORT_TSTR("hailo"))) {
+          test_config.machine_config.provider_type_name = onnxruntime::kHailoExecutionProvider;
         } else {
           return false;
         }
