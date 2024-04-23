@@ -157,7 +157,7 @@ std::unique_ptr<InferVStreams> HailoKernel::create_vstreams_pipeline(ConstPointe
     std::vector<int64_t> input_format_order_params, std::vector<int64_t> output_quantized_params, std::vector<int64_t> output_format_order_params)
 {
     // Create input VStreams params
-    auto input_params_expected = m_network_group->make_input_vstream_params(false, HAILO_FORMAT_TYPE_AUTO, 
+    auto input_params_expected = m_network_group->make_input_vstream_params(false, HAILO_FORMAT_TYPE_AUTO,
         HAILO_DEFAULT_VSTREAM_TIMEOUT_MS, HAILO_DEFAULT_VSTREAM_QUEUE_SIZE);
     HAILO_CHECK_EXPECTED(input_params_expected, "Failed to make input vstream params");
     auto input_params = input_params_expected.release();

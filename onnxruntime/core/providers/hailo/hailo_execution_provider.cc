@@ -10,14 +10,12 @@
 #include "hailo_op.h"
 #include "hailo_memcpy_op.h"
 #include "utils.h"
+#include "hailo_fwd.h"
 
 namespace onnxruntime {
 
 constexpr const char* HAILO = "Hailo";
 constexpr const char* HAILO_CPU = "HailoCpu";
-
-template <typename T>
-KernelCreateInfo BuildKernelCreateInfo();
 
 ONNX_OPERATOR_KERNEL_EX(
     HailoOp,
