@@ -25,6 +25,8 @@ def _disable_training_mode(model: onnx.ModelProto) -> None:
         for attr in node.attribute:
             if attr.name == "training_mode":
                 attr.i = 0
+        # delete running_mean and running_var outputs
+        del node.output[1:]
 
     ops_to_disable_training_mode_func_map = {
         "Dropout": disable_training_mode_dropout,
