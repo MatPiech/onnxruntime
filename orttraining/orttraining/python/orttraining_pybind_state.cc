@@ -99,6 +99,14 @@ GetExecutionProvidersForTrainingApis(OrtDevice device) {
     return provider;
   }
 #endif
+#ifdef USE_HAILO
+  if (device.Type() == OrtDevice::HAILO) {
+    if (auto factory = onnxruntime::HailoProviderFactoryCreator::Create(1))
+      provider.push_back(factory->CreateProvider());
+
+    return provider;
+  }
+#endif
   if (device.Type() == OrtDevice::CPU) {
     provider = std::vector<std::shared_ptr<IExecutionProvider>>();
   } else {

@@ -250,6 +250,8 @@ const char* GetDeviceName(const OrtDevice& device) {
 #else
       return "NPU";
 #endif
+    case OrtDevice::HAILO:
+      return "HAILO";
     default:
       ORT_THROW("Unknown device type: ", device.Type());
   }
@@ -1263,6 +1265,7 @@ void addObjectMethods(py::module& m, ExecutionProviderRegistrationFn ep_registra
       .def_static("fpga", []() { return OrtDevice::FPGA; })
       .def_static("npu", []() { return OrtDevice::NPU; })
       .def_static("dml", []() { return OrtDevice::GPU; })
+      .def_static("hailo", []() { return OrtDevice::HAILO; })
       .def_static("default_memory", []() { return OrtDevice::MemType::DEFAULT; });
 
   py::class_<OrtArenaCfg> ort_arena_cfg_binding(m, "OrtArenaCfg");
