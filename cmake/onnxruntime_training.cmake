@@ -47,6 +47,11 @@ if (onnxruntime_USE_NCCL)
   target_include_directories(onnxruntime_training PRIVATE ${NCCL_INCLUDE_DIRS})
 endif()
 
+if (onnxruntime_USE_HAILO)
+  find_package(HailoRT 4.16.0 EXACT REQUIRED)
+  target_link_libraries(onnxruntime_training PRIVATE HailoRT::libhailort)
+endif()
+
 if (onnxruntime_BUILD_UNIT_TESTS)
   set_target_properties(onnxruntime_training PROPERTIES FOLDER "ONNXRuntime")
   source_group(TREE ${ORTTRAINING_ROOT} FILES ${onnxruntime_training_srcs})
@@ -75,6 +80,10 @@ if (onnxruntime_BUILD_UNIT_TESTS)
 
   if (onnxruntime_ENABLE_TRAINING_TORCH_INTEROP)
     target_link_libraries(onnxruntime_training_runner PRIVATE Python::Python)
+  endif()
+
+  if (onnxruntime_USE_HAILO)
+    target_link_libraries(onnxruntime_training_runner PRIVATE HailoRT::libhailort)
   endif()
 
   onnxruntime_add_include_to_target(onnxruntime_training_runner onnxruntime_training onnxruntime_framework onnxruntime_common onnx onnx_proto ${PROTOBUF_LIB} onnxruntime_training flatbuffers::flatbuffers Boost::mp11 safeint_interface)
@@ -131,6 +140,10 @@ if (onnxruntime_BUILD_UNIT_TESTS)
 
   if (onnxruntime_ENABLE_TRAINING_TORCH_INTEROP)
     list(APPEND ONNXRUNTIME_LIBS Python::Python)
+  endif()
+
+  if (onnxruntime_USE_HAILO)
+    list(APPEND ONNXRUNTIME_LIBS HailoRT::libhailort)
   endif()
 
   list(APPEND ONNXRUNTIME_LIBS
