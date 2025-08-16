@@ -51,7 +51,7 @@ class ONNX_OPERATOR_KERNEL_CLASS_NAME(kHailoExecutionProvider, kOnnxDomain, 1, M
 class ONNX_OPERATOR_KERNEL_CLASS_NAME(kHailoExecutionProvider, kHailoDomain, 1, HailoOp);
 
 HailoExecutionProvider::HailoExecutionProvider(const HailoExecutionProviderInfo& info)
-    : IExecutionProvider{onnxruntime::kHailoExecutionProvider, true}, info_{info}
+    : IExecutionProvider{onnxruntime::kHailoExecutionProvider}, info_{info}
 {}
 
 HailoExecutionProvider::~HailoExecutionProvider() {}
@@ -98,7 +98,10 @@ InlinedVector<NodeIndex> HailoExecutionProvider::GetSupportedNodes(const GraphVi
 }
 
 std::vector<std::unique_ptr<ComputeCapability>> HailoExecutionProvider::GetCapability(
-    const GraphViewer& graph_viewer, const IKernelLookup& /*kernel_lookup*/) const
+    const GraphViewer& graph_viewer,
+    const IKernelLookup& /*kernel_lookup*/,
+    const GraphOptimizerRegistry& /* graph_optimizer_registry */,
+    IResourceAccountant* /* resource_accountant */) const
 {
 
     std::vector<std::unique_ptr<ComputeCapability>> result;

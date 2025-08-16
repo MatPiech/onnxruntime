@@ -30,11 +30,11 @@ public:
     {
         switch (order) {
         case HAILO_FORMAT_ORDER_NC:
-            return std::move(TensorShape({frames_count, hailo_shape.features}));
+            return TensorShape({frames_count, hailo_shape.features});
         case HAILO_FORMAT_ORDER_HAILO_NMS:
             HAILO_ORT_THROW("Hailo format order nms is not supported by HailoEP.");
         default:
-            return std::move(TensorShape({frames_count, hailo_shape.features, hailo_shape.height, hailo_shape.width}));
+            return TensorShape({frames_count, hailo_shape.features, hailo_shape.height, hailo_shape.width});
         }
     }
 
