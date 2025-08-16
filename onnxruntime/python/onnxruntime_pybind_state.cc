@@ -299,6 +299,8 @@ const char* GetDeviceName(const OrtDevice& device) {
 #else
       return "NPU";
 #endif
+    case OrtDevice::HAILO:
+      return "HAILO";
     default:
       ORT_THROW("Unknown device type: ", device.Type());
   }
@@ -1120,6 +1122,10 @@ std::unique_ptr<IExecutionProvider> CreateExecutionProviderInstance(
 
     return onnxruntime::DnnlProviderFactoryCreator::Create(&dnnl_options)->CreateProvider();
 #endif
+  } else if (type == kHailoExecutionProvider) {
+#ifdef USE_HAILO
+    return onnxruntime::HailoProviderFactoryCreator::Create(session_options.enable_cpu_mem_arena)->CreateProvider();
+#endif
   } else if (type == kOpenVINOExecutionProvider) {
 #if defined(USE_OPENVINO) || defined(USE_OPENVINO_PROVIDER_INTERFACE)
     ProviderOptions OV_provider_options_map;
@@ -1344,6 +1350,10 @@ std::unique_ptr<IExecutionProvider> CreateExecutionProviderInstance(
                           << ". Please reference "
                           << "https://onnxruntime.ai/docs/execution-providers/QNN-ExecutionProvider.html"
                           << " to ensure all dependencies are met.";
+#endif
+  } else if (type == kHailoExecutionProvider) {
+#ifdef USE_HAILO
+    return onnxruntime::HailoProviderFactoryCreator::Create(session_options.enable_cpu_mem_arena)->CreateProvider();
 #endif
   } else {
     // check whether it is a dynamic load EP:
@@ -1670,6 +1680,7 @@ void addObjectMethods(py::module& m, ExecutionProviderRegistrationFn ep_registra
       .def_static("npu", []() { return OrtDevice::NPU; })
       .def_static("dml", []() { return OrtDevice::DML; })
       .def_static("webgpu", []() { return OrtDevice::GPU; })
+      .def_static("hailo", []() { return OrtDevice::HAILO; })
       .def_static("default_memory", []() { return OrtDevice::MemType::DEFAULT; });
 
   py::class_<OrtArenaCfg> ort_arena_cfg_binding(m, "OrtArenaCfg");

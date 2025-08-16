@@ -628,6 +628,12 @@ if(onnxruntime_USE_ARMNN)
   list(APPEND onnxruntime_test_providers_dependencies onnxruntime_providers_armnn)
 endif()
 
+if(onnxruntime_USE_HAILO)
+  list(APPEND onnxruntime_test_framework_src_patterns  ${TEST_SRC_DIR}/providers/hailo/*)
+  list(APPEND onnxruntime_test_framework_libs onnxruntime_providers_hailo)
+  list(APPEND onnxruntime_test_providers_dependencies onnxruntime_providers_hailo onnxruntime_providers_shared)
+endif()
+
 set(ONNXRUNTIME_TEST_STATIC_PROVIDER_LIBS
     # CUDA, ROCM, TENSORRT, MIGRAPHX, DNNL, and OpenVINO are dynamically loaded at runtime.
     # QNN EP can be built as either a dynamic and static libs.

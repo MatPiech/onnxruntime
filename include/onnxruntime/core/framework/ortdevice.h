@@ -18,6 +18,7 @@ struct OrtDevice {
   static const DeviceType FPGA = 2;
   static const DeviceType NPU = 3;  // Ascend
   static const DeviceType DML = 4;
+  static const DeviceType HAILO = 5;
 
   struct MemType {
     // Pre-defined memory types.

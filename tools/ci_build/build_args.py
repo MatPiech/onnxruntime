@@ -758,6 +758,10 @@ def add_execution_provider_args(parser: argparse.ArgumentParser) -> None:
     azure_group = parser.add_argument_group("Azure Execution Provider")
     azure_group.add_argument("--use_azure", action="store_true", help="Enable Azure EP.")
 
+    # --- Hailo ---
+    hailo_group = parser.add_argument_group("Hailo Execution Provider")
+    hailo_group.add_argument("--use_hailo", action='store_true', help="Enable HAILO.")
+
 
 def add_other_feature_args(parser: argparse.ArgumentParser) -> None:
     """Adds arguments for other miscellaneous features."""

@@ -555,6 +555,13 @@ select from 'TF8', 'TF16', 'UINT8', 'FLOAT', 'ITENSOR'. \n)");
 #else
     ORT_THROW("VitisAI is not supported in this build\n");
 #endif
+  } else if (provider_name == onnxruntime::kHailoExecutionProvider) {
+#ifdef USE_HAILO
+    Ort::ThrowOnError(OrtSessionOptionsAppendExecutionProvider_Hailo(session_options,
+                                                                     performance_test_config.run_config.enable_cpu_mem_arena ? 1 : 0));
+#else
+    ORT_THROW("Hailo is not supported in this build\n");
+#endif
   } else if (!provider_name_.empty() &&
              provider_name_ != onnxruntime::kCpuExecutionProvider &&
              provider_name_ != onnxruntime::kOpenVINOExecutionProvider) {

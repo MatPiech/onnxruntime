@@ -5251,6 +5251,17 @@ struct OrtApi {
    * \since Version 1.22.
    */
   const OrtEpApi*(ORT_API_CALL* GetEpApi)();
+
+  /** \brief Append Hailo execution provider to the session options
+  *
+  * If Hailo is not available (due to a non Hailo enabled build, or if HailoRT is not installed on the system), this function will fail.
+  *
+  * \param[in] options
+  *
+  * \snippet{doc} snippets.dox OrtStatus Return Value
+  */
+  ORT_API2_STATUS(SessionOptionsAppendExecutionProvider_Hailo,
+                  _In_ OrtSessionOptions* options, _In_ int use_arena); // TODO: HRT-8414
 };
 
 /*

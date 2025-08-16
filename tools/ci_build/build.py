@@ -1026,6 +1026,9 @@ def generate_build_tree(
     if args.use_azure:
         add_default_definition(cmake_extra_defines, "onnxruntime_USE_AZURE", "ON")
 
+    if args.use_hailo:
+        add_default_definition(cmake_extra_defines, "onnxruntime_USE_HAILO", "ON")
+
     if args.use_lock_free_queue:
         add_default_definition(cmake_extra_defines, "onnxruntime_USE_LOCK_FREE_QUEUE", "ON")
 
