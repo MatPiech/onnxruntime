@@ -31,6 +31,7 @@ struct OrtDevice {
   // this is used in the python API so we need to keep it for backward compatibility
   // it is only used in the OrtDevice ctor, and is mapped to GPU + VendorIds::MICROSOFT
   static constexpr DeviceType DML = 4;
+  static constexpr DeviceType HAILO = 5;
 
   struct MemType {
     static constexpr MemoryType DEFAULT = 0;

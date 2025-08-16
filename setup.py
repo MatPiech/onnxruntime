@@ -367,6 +367,7 @@ if platform.system() == "Linux" or platform.system() == "AIX":
         "libmklml_gnu.so",
         "libiomp5.so",
         "mimalloc.so",
+        "libonnxruntime_providers_hailo.so",
         "libonnxruntime.so*",
     ]
     dl_libs = ["libonnxruntime_providers_shared.so"]

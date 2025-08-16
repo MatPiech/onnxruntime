@@ -7432,6 +7432,18 @@ struct OrtApi {
   ORT_API2_STATUS(SetPerSessionThreadPoolCallbacks, _Inout_ OrtEnv* env,
                   _In_ const OrtThreadPoolCallbacksConfig* config);
 
+  /** \brief Append Hailo execution provider to session options.
+   *
+   * Fails if Hailo support is unavailable in the current build or runtime environment.
+   *
+   * \param[in] options Session options.
+   * \param[in] use_arena Non-zero to enable arena usage.
+   *
+   * \snippet{doc} snippets.dox OrtStatus Return Value
+   */
+  ORT_API2_STATUS(SessionOptionsAppendExecutionProvider_Hailo,
+                  _In_ OrtSessionOptions* options, _In_ int use_arena);
+
   /// @}
 };
 

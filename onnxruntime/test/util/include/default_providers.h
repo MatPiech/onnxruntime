@@ -25,6 +25,7 @@ std::shared_ptr<IExecutionProviderFactory> CreateExecutionProviderFactory_Rknpu(
 std::shared_ptr<IExecutionProviderFactory> CreateExecutionProviderFactory_Tensorrt(const OrtTensorRTProviderOptions* params);
 std::shared_ptr<IExecutionProviderFactory> CreateExecutionProviderFactory_Tensorrt(const OrtTensorRTProviderOptionsV2* params);
 std::shared_ptr<IExecutionProviderFactory> CreateExecutionProviderFactory_Cann(const OrtCANNProviderOptions* provider_options);
+std::shared_ptr<IExecutionProviderFactory> CreateExecutionProviderFactory_Hailo(int use_arena);
 
 // EP for internal testing
 std::shared_ptr<IExecutionProviderFactory> CreateExecutionProviderFactory_InternalTesting(
@@ -64,6 +65,7 @@ std::unique_ptr<IExecutionProvider> DefaultWebGpuExecutionProvider(bool is_nhwc 
 std::unique_ptr<IExecutionProvider> WebGpuExecutionProviderWithOptions(const ConfigOptions& config_options);
 std::unique_ptr<IExecutionProvider> DefaultCannExecutionProvider();
 std::unique_ptr<IExecutionProvider> DefaultDmlExecutionProvider();
+std::unique_ptr<IExecutionProvider> DefaultHailoExecutionProvider(bool enable_arena = true);
 
 }  // namespace test
 }  // namespace onnxruntime

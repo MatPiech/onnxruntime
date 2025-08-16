@@ -4762,6 +4762,7 @@ static constexpr OrtApi ort_api_1_to_25 = {
     &OrtApis::RunOptionsDisableProfiling,
     &OrtApis::KernelInfoGetAttributeArray_string,
     &OrtApis::SetPerSessionThreadPoolCallbacks,
+    &OrtApis::SessionOptionsAppendExecutionProvider_Hailo,
     // End of Version 25 - DO NOT MODIFY ABOVE (see above text for more information)
 };
 

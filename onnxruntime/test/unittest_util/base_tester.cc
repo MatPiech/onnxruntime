@@ -687,6 +687,7 @@ void BaseTester::RunWithConfig(size_t* number_of_pre_packed_weights_counter,
 #if defined(USE_WEBGPU) && !defined(ORT_USE_EP_API_ADAPTERS)
           kWebGpuExecutionProvider,
 #endif
+      kHailoExecutionProvider,
       };
 
       // need to special case any synthetic EP names in the exclude list
@@ -759,6 +760,8 @@ void BaseTester::RunWithConfig(size_t* number_of_pre_packed_weights_counter,
           execution_provider = DefaultDmlExecutionProvider();
         else if (provider_type == onnxruntime::kWebGpuExecutionProvider)
           execution_provider = DefaultWebGpuExecutionProvider();
+        else if (provider_type == onnxruntime::kHailoExecutionProvider)
+          execution_provider = DefaultHailoExecutionProvider();
         else if (provider_type == dynamic_plugin_ep_name) {
           execution_provider = dynamic_plugin_ep_infra::MakeEp();
         }

@@ -831,6 +831,10 @@ def add_execution_provider_args(parser: argparse.ArgumentParser) -> None:
     azure_group = parser.add_argument_group("Azure Execution Provider")
     azure_group.add_argument("--use_azure", action="store_true", help="Enable Azure EP.")
 
+    # --- Hailo ---
+    hailo_group = parser.add_argument_group("Hailo Execution Provider")
+    hailo_group.add_argument("--use_hailo", action="store_true", help="Enable HAILO.")
+
     # --- DX Interop Feature ---
     dx_interop_group = parser.add_argument_group("DirectX Interop Feature")
     dx_interop_group.add_argument(

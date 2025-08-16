@@ -97,3 +97,7 @@
 #if defined(USE_AZURE)
 #include "core/providers/azure/azure_provider_factory_creator.h"
 #endif
+
+#if defined(USE_HAILO)
+#include "core/providers/hailo/hailo_provider_factory_creator.h"
+#endif

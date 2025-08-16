@@ -146,6 +146,9 @@ extern std::string openvino_device_type;
 #include "core/providers/cann/cann_provider_factory.h"
 #include "core/providers/cann/cann_execution_provider_info.h"
 #endif
+#ifdef USE_HAILO
+#include "core/providers/hailo/hailo_provider_factory.h"
+#endif
 
 #if defined(USE_CUDA) || defined(USE_CUDA_PROVIDER_INTERFACE)
 namespace onnxruntime {
@@ -486,5 +489,6 @@ std::shared_ptr<IExecutionProviderFactory> CreateExecutionProviderFactory_Nnapi(
 std::shared_ptr<IExecutionProviderFactory> CreateExecutionProviderFactory_VSINPU();
 std::shared_ptr<IExecutionProviderFactory> CreateExecutionProviderFactory_Rknpu();
 std::shared_ptr<IExecutionProviderFactory> CreateExecutionProviderFactory_CoreML(uint32_t flags);
+std::shared_ptr<IExecutionProviderFactory> CreateExecutionProviderFactory_Hailo(int use_arena);
 constexpr const char* kDefaultExecutionProviderEntry = "GetProvider";
 }  // namespace onnxruntime
