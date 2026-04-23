@@ -80,10 +80,12 @@ if(ORT_TARGET_PROCESSOR MATCHES "^arm64.*" AND NOT CMAKE_C_COMPILER_ID STREQUAL 
   onnxruntime_fetchcontent_declare(kleidiai URL ${DEP_URL_kleidiai} URL_HASH SHA1=${DEP_SHA1_kleidiai} EXCLUDE_FROM_ALL)
   onnxruntime_fetchcontent_makeavailable(kleidiai)
   # GCC can ICE in vect_transform_reduction on this pack kernel; keep vectorization off for just this file.
-  set_source_files_properties(
-    ${kleidiai_SOURCE_DIR}/kai/ukernels/matmul/pack/kai_lhs_quant_pack_qai8dxp_bf16_neon.c
-    PROPERTIES COMPILE_OPTIONS "$<$<C_COMPILER_ID:GNU>:-fno-tree-vectorize>"
-  )
+  if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
+    set_source_files_properties(
+      ${kleidiai_SOURCE_DIR}/kai/ukernels/matmul/pack/kai_lhs_quant_pack_qai8dxp_bf16_neon.c
+      PROPERTIES COMPILE_FLAGS "-fno-tree-vectorize -fno-tree-slp-vectorize -fno-tree-loop-vectorize"
+    )
+  endif()
   set(KLEIDIAI_SOURCE_DIR ${kleidiai_SOURCE_DIR})
 endif()
 
