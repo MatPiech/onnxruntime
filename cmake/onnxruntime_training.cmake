@@ -44,7 +44,7 @@ if (onnxruntime_USE_NCCL)
 endif()
 
 if (onnxruntime_USE_HAILO)
-  find_package(HailoRT 4.22.0 EXACT REQUIRED)
+  find_package(HailoRT 4.23.0 EXACT REQUIRED)
   target_link_libraries(onnxruntime_training PRIVATE HailoRT::libhailort)
 endif()
 

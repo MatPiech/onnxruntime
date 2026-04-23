@@ -5,7 +5,7 @@ Hailo ONNX Runtime integrates ONNX Runtime with HailoRT to enable Hailo-EP, prov
 * ONNX Runtime version 1.22.1 with Python 3.10 and above
 
 # Prerequisites
-* HailoRT v4.22.0
+* HailoRT v4.23.0
 
 # Build Instructions
 To build ONNXRuntime with HailoRT please follow the following steps:
