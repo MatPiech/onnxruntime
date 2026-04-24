@@ -58,16 +58,16 @@ HailoExecutionProvider::~HailoExecutionProvider() {}
 
 std::vector<AllocatorPtr> HailoExecutionProvider::CreatePreferredAllocators() {
     AllocatorCreationInfo default_memory_info(
-        {[](int) {
+        [](OrtDevice::DeviceId) {
             return onnxruntime::CreateCPUAllocator(OrtMemoryInfo(HAILO, OrtAllocatorType::OrtDeviceAllocator));
-        }},
+        },
         0, info_.create_arena);
 
     AllocatorCreationInfo cpu_memory_info(
-        {[](int) {
-            return onnxruntime::CreateCPUAllocator(OrtMemoryInfo(HAILO_CPU, OrtAllocatorType::OrtDeviceAllocator, OrtDevice(), 0,
-                                                             OrtMemTypeCPUOutput));
-        }},
+        [](OrtDevice::DeviceId) {
+            return onnxruntime::CreateCPUAllocator(
+                OrtMemoryInfo(HAILO_CPU, OrtAllocatorType::OrtDeviceAllocator, OrtDevice(), OrtMemTypeCPUOutput));
+        },
         0, info_.create_arena);
 
     return std::vector<AllocatorPtr>{CreateAllocator(default_memory_info), CreateAllocator(cpu_memory_info)};
