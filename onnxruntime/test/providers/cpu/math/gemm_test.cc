@@ -1484,15 +1484,20 @@ struct GemmOptimizePackedParams {
 
   // Helper for readable test names
   std::string ToString() const {
-    std::string name = std::to_string(M) + "x" + std::to_string(K) + "x" + std::to_string(N);
+    std::ostringstream name;
+    name << M << "x" << K << "x" << N;
 
     // Bias type names
     const char* bias_names[] = {"noBias", "MBias", "ScalarBias", "MNBias", "NBias"};
-    name += "_" + std::string(bias_names[static_cast<int>(bias_type)]);
+    name << '_' << bias_names[static_cast<int>(bias_type)];
 
-    name += (transA ? "_transA" : "");
-    name += (transB ? "_transB" : "");
-    return name;
+    if (transA) {
+      name << "_transA";
+    }
+    if (transB) {
+      name << "_transB";
+    }
+    return name.str();
   }
 };
 

@@ -1148,7 +1148,7 @@ static std::shared_ptr<IExecutionProviderFactory> CreateExecutionProviderFactory
 #endif
   } else if (type == kHailoExecutionProvider) {
 #ifdef USE_HAILO
-    return onnxruntime::HailoProviderFactoryCreator::Create(session_options.enable_cpu_mem_arena)->CreateProvider();
+    return onnxruntime::HailoProviderFactoryCreator::Create(session_options.enable_cpu_mem_arena);
 #endif
   } else if (type == kOpenVINOExecutionProvider) {
 #if defined(USE_OPENVINO) || defined(USE_OPENVINO_PROVIDER_INTERFACE)
@@ -1317,7 +1317,7 @@ static std::shared_ptr<IExecutionProviderFactory> CreateExecutionProviderFactory
 #endif
   } else if (type == kHailoExecutionProvider) {
 #ifdef USE_HAILO
-    return onnxruntime::HailoProviderFactoryCreator::Create(session_options.enable_cpu_mem_arena)->CreateProvider();
+    return onnxruntime::HailoProviderFactoryCreator::Create(session_options.enable_cpu_mem_arena);
 #endif
   } else {
 #if !defined(ORT_MINIMAL_BUILD)

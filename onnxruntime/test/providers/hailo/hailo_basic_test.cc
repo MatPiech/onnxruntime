@@ -14,7 +14,7 @@
 #include "test/util/include/default_providers.h"
 #include "test/util/include/test/test_environment.h"
 #include "test/util/include/inference_session_wrapper.h"
-#include "test/framework/test_utils.h"
+#include "test/unittest_util/framework_test_utils.h"
 #include <thread>
 
 namespace onnxruntime {
@@ -148,7 +148,7 @@ void run_hailo_test(const std::string &model_path, const std::string &session_lo
     auto hailo_provider = DefaultHailoExecutionProvider(true);
     EXPECT_TRUE(hailo_provider != nullptr);
     auto cpu_allocator = hailo_provider->CreatePreferredAllocators()[1];
-    ASSERT_STREQ(cpu_allocator->Info().name, "HailoCpu");
+    ASSERT_EQ(cpu_allocator->Info().name, "HailoCpu");
     EXPECT_TRUE(session_object.RegisterExecutionProvider(std::move(hailo_provider)).IsOK());
 
     ASSERT_STATUS_OK(session_object.Initialize());
